@@ -252,8 +252,7 @@ declare module Phaser {
       }
 
       class Game {
-            constructor(width: number, height: number, renderer: number, parent: string, state: Phaser.StateManager, transparent: boolean, antialias: boolean);
-            constructor(width: number, height: number, renderer: number, parent: string, state: any);
+            constructor(width: number, height: number, renderer: number, parent: string, state: Phaser.State, transparent: boolean, antialias: boolean);
             id: number;
             width: number;
             height: number;
@@ -661,7 +660,7 @@ declare module Phaser {
             group(parent: any, name: string): Phaser.Group;
             audio(key: string, volume: number, loop: boolean): Phaser.Sound;
             tileSprite(x: number, y: number, width: number, height: number, key?: string, frame?: number): Phaser.TileSprite;
-            text(x: number, y: number, text: string, style: string): Phaser.Text;
+            text(x: number, y: number, text: string, style: Object): Phaser.Text;
             button(x: number, y: number, key: string, callback: Function, callbackContext: Object, overFrame?: number, outFrame?: number, downFrame?: number): Phaser.Button;
             graphics(x: number, y: number): Phaser.Graphics;
             emitter(x: number, y: number, maxParticles: number): Phaser.Particles.Arcade.Emitter;

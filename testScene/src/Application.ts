@@ -1,13 +1,19 @@
+/// <reference path="phaser.d.ts"/>
 /// <reference path="Scene.ts"/>
 
 // compilei com tsc 0.9.1.1
 class Application
 {
+    private game: Phaser.Game;
+
     constructor()
     {
-        game = new Phaser.Game(640, 480, Phaser.CANVAS, '', {
-            preload: this.preload, create: this.create, update: this.update, render: this.render
-        });
+        var state = new Phaser.State();
+        state.preload = this.preload;
+        state.create = this.create;
+        state.update = this.update;
+        state.render = this.render;
+        this.game = new Phaser.Game(640, 480, Phaser.CANVAS, '', state, false, false);
     }
 
     preload(): void
@@ -16,9 +22,9 @@ class Application
 
     create(): void
     {
-        game.state.add('Menu', Menu);
-        game.state.add('Level', Level);
-        game.state.start('Menu');
+        this.game.state.add('Menu', new Menu(this.game), false);
+        this.game.state.add('Level', new Level(this.game), false);
+        this.game.state.start('Menu', true, true);
     }
 
     update(): void
@@ -30,5 +36,4 @@ class Application
     }
 }
 
-var game;
 window.onload = (function() { var app = new Application(); });
