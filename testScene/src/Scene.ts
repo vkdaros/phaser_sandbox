@@ -1,18 +1,12 @@
-declare var Phaser;
-
-//module Scene
-//{
+/// <reference path="phaser.d.ts"/>
 
 
 
-
-
-class Scene
+class Scene extends Phaser.State
 {
-    public game;
-
-    constructor(game)
+    constructor(game: Phaser.Game)
     {
+        super();
         this.game = game;
     }
 
@@ -46,12 +40,12 @@ class Scene
 
 class Menu extends Scene
 {
-    private text;
+    private text: Phaser.Text;
     private timer: number;
 
 
 
-    constructor(game)
+    constructor(game: Phaser.Game)
     {
         super(game);
         this.timer = 0.0;
@@ -108,12 +102,12 @@ class Menu extends Scene
 
 class Level extends Scene
 {
-    private actor;
-    private text;
+    private actor: Phaser.Sprite;
+    private text: Phaser.Text;
 
 
 
-    constructor(game)
+    constructor(game: Phaser.Game)
     {
         super(game);
     }
@@ -162,4 +156,3 @@ class Level extends Scene
 
 
 
-//}
