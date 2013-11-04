@@ -4,6 +4,7 @@
 class Boat extends Scene {
     private boat: Phaser.Sprite;
     private submarines: Phaser.Group;
+    private barrel: Phaser.Sprite;
 
     constructor(game: Phaser.Game) {
         super(game);
@@ -28,6 +29,10 @@ class Boat extends Scene {
             submarine.anchor.x = 0.5;
             submarine.anchor.y = 0.5;
         }
+
+        this.barrel = this.game.add.sprite(9999, 9999, 'barrelImg');
+        this.barrel.anchor.x = 0.5;
+        this.barrel.anchor.y = 0.0;
     }
 
     public update(): void {
@@ -41,5 +46,15 @@ class Boat extends Scene {
         if (keyboard.isDown(keys.RIGHT)) {
             this.boat.body.acceleration.x = 50;
         }
+
+
+        // throw barrel
+        if(keyboard.isDown(keys.DOWN)) {
+            if(this.barrel.body.y > 650) {
+                this.barrel.body.y = this.boat.position.y + 30;
+                this.barrel.body.x = this.boat.position.x;
+            }
+        }
+        this.barrel.body.velocity.y = 100;
     }
 }
