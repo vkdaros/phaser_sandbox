@@ -1,11 +1,12 @@
 ///<reference path='phaser.d.ts'/>
 ///<reference path='Scene.ts'/>
+///<reference path='Menu.ts'/>
 ///<reference path='Boat.ts'/>
 
 class BoatGame {
     private game: Phaser.Game;
 
-    public constructor() {
+    constructor() {
         var state = new Phaser.State();
         state.preload = this.preload;
         state.create = this.create;

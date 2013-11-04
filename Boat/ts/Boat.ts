@@ -5,7 +5,7 @@ class Boat extends Scene {
     private boat: Phaser.Sprite;
     private submarine: Phaser.Sprite;
 
-    public constructor(game: Phaser.Game) {
+    constructor(game: Phaser.Game) {
         super(game);
     }
 
@@ -21,8 +21,14 @@ class Boat extends Scene {
 
     public create(): void {
         this.game.add.sprite(0, 0, 'backgroundImg');
-        this.boat = this.game.add.sprite(320, 200, 'boatImg');
+
+        this.boat = this.game.add.sprite(320, 170, 'boatImg');
+        this.boat.anchor.x = 0.5;
+        this.boat.anchor.y = 0.5;
+        
         this.submarine = this.game.add.sprite(600, 300, 'submarineLongImg');
+        this.submarine.anchor.x = 0.5;
+        this.submarine.anchor.y = 0.5;
     }
 
     public update(): void {

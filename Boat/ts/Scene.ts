@@ -1,7 +1,9 @@
 ///<reference path="phaser.d.ts"/>
 
 class Scene extends Phaser.State {
-    public constructor(game: Phaser.Game) {
+    public game: Phaser.Game;
+
+    constructor(game: Phaser.Game) {
         super();
         this.game = game;
     }

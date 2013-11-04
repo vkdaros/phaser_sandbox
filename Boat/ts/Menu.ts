@@ -4,7 +4,7 @@
 class Menu extends Scene {
     private text: Phaser.Text;
 
-    public constructor(game: Phaser.Game) {
+    constructor(game: Phaser.Game) {
         super(game);
     }
 
@@ -16,7 +16,7 @@ class Menu extends Scene {
         };
         this.text = this.game.add.text(this.game.world.centerX,
                                        this.game.world.centerY,
-                                       "Press SPACE to play.",
+                                       "Press SPACE to play.\nArrows to move.",
                                        fontConfig);
         this.text.anchor.x = 0.5;
         this.text.anchor.y = 0.5;
