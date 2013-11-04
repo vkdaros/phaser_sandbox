@@ -9,16 +9,6 @@ class Boat extends Scene {
         super(game);
     }
 
-    public preload(): void {
-        // TODO: Make all loading happens in BoatGame.
-        this.game.load.image('backgroundImg', 'assets/images/background.png');
-        this.game.load.image('boatImg', 'assets/images/boat.png');
-        this.game.load.image('submarineLongImg',
-                             'assets/images/submarine_long.png');
-        this.game.load.image('barrelImg', 'assets/images/barrel.png');
-        this.game.load.image('bombImg', 'assets/images/bomb.png');
-    }
-
     public create(): void {
         this.game.add.sprite(0, 0, 'backgroundImg');
 

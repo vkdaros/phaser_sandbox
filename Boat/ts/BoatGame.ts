@@ -16,8 +16,12 @@ class BoatGame {
     }
 
     public preload(): void {
-        // TODO: Make all assets load here in order to prevent loading wait
-        //       every time a new state is started.
+        this.game.load.image('backgroundImg', 'assets/images/background.png');
+        this.game.load.image('boatImg', 'assets/images/boat.png');
+        this.game.load.image('submarineLongImg',
+                             'assets/images/submarine_long.png');
+        this.game.load.image('barrelImg', 'assets/images/barrel.png');
+        this.game.load.image('bombImg', 'assets/images/bomb.png');
     }
 
     public create(): void {
