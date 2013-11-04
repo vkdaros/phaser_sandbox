@@ -3,7 +3,7 @@
 
 class Boat extends Scene {
     private boat: Phaser.Sprite;
-    private submarine: Phaser.Sprite;
+    private submarines: Phaser.Group;
     private barrel: Phaser.Sprite;
 
     constructor(game: Phaser.Game) {
@@ -18,10 +18,17 @@ class Boat extends Scene {
         this.boat.body.drag.x = 50;
         this.boat.anchor.x = 0.5;
         this.boat.anchor.y = 0.5;
-        
-        this.submarine = this.game.add.sprite(600, 300, 'submarineLongImg');
-        this.submarine.anchor.x = 0.5;
-        this.submarine.anchor.y = 0.5;
+
+        this.submarines = this.game.add.group(null, 'submarines');
+        for (var i: number = 0; i < 5; i++) {
+            var submarine: Phaser.Sprite;
+            var x = 30 + 180 * i;
+            var y = 300 + Math.random() * 300;
+            submarine = this.submarines.create(x, y, 'submarineLongImg', "0",
+                                               true);
+            submarine.anchor.x = 0.5;
+            submarine.anchor.y = 0.5;
+        }
 
         this.barrel = this.game.add.sprite(9999, 9999, 'barrelImg');
         this.barrel.anchor.x = 0.5;
@@ -29,8 +36,6 @@ class Boat extends Scene {
     }
 
     public update(): void {
-        this.submarine.angle += 1;
-
         var keyboard = this.game.input.keyboard;
         var keys = Phaser.Keyboard;
 
