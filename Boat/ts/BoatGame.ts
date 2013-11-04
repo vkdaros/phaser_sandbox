@@ -2,8 +2,8 @@
 ///<reference path='Scene.ts'/>
 ///<reference path='Menu.ts'/>
 ///<reference path='Boat.ts'/>
-///<reference path='WinScene.ts'/>
-///<reference path='LoseScene.ts'/>
+///<reference path='Win.ts'/>
+///<reference path='Lose.ts'/>
 
 class BoatGame {
     private game: Phaser.Game;
@@ -29,8 +29,8 @@ class BoatGame {
     public create(): void {
         this.game.state.add('Menu', new Menu(this.game), false);
         this.game.state.add('Boat', new Boat(this.game), false);
-        this.game.state.add('Win', new WinScene(this.game), false);
-        this.game.state.add('Lose', new LoseScene(this.game), false);
+        this.game.state.add('Win', new Win(this.game), false);
+        this.game.state.add('Lose', new Lose(this.game), false);
         this.game.state.start('Menu', true, true);
     }
 }

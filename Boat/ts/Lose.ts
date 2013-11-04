@@ -1,7 +1,7 @@
 ///<reference path="phaser.d.ts"/>
 ///<reference path="Scene.ts"/>
 
-class WinScene extends Scene {
+class Lose extends Scene {
     private text: Phaser.Text;
 
     constructor(game: Phaser.Game) {
