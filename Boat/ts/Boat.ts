@@ -23,6 +23,8 @@ class Boat extends Scene {
         this.game.add.sprite(0, 0, 'backgroundImg');
 
         this.boat = this.game.add.sprite(320, 170, 'boatImg');
+        this.boat.body.maxVelocity.x = 100;
+        this.boat.body.drag.x = 50;
         this.boat.anchor.x = 0.5;
         this.boat.anchor.y = 0.5;
         
@@ -37,11 +39,12 @@ class Boat extends Scene {
         var keyboard = this.game.input.keyboard;
         var keys = Phaser.Keyboard;
 
+        this.boat.body.acceleration.x = 0;
         if (keyboard.isDown(keys.LEFT)) {
-            this.boat.x -= 1;
+            this.boat.body.acceleration.x = -50;
         }
         if (keyboard.isDown(keys.RIGHT)) {
-            this.boat.x += 1;
+            this.boat.body.acceleration.x = 50;
         }
     }
 }
