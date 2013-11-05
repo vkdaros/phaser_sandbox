@@ -66,5 +66,18 @@ class Boat extends Scene {
             }
         }
         this.barrel.body.velocity.y = 100;
+
+        // handle collision barrel x submarines
+        this.game.physics.collide(this.barrel, this.submarines,
+                                  this.handleBarrelSubmarinesCollision,
+                                  null, this);
+    }
+
+    private handleBarrelSubmarinesCollision(barrel: Phaser.Sprite,
+                                            submarine: Phaser.Sprite): void {
+        barrel.reset(9999, 9999);
+        submarine.kill();
+        if(this.submarines.countLiving() == 0)
+            this.setScene('Win');
     }
 }
