@@ -22,12 +22,22 @@ class Boat extends Scene {
         this.submarines = this.game.add.group(null, 'submarines');
         for (var i: number = 0; i < 5; i++) {
             var submarine: Phaser.Sprite;
-            var x = 30 + 180 * i;
-            var y = 300 + Math.random() * 300;
+            var plusMinus: number = 2 * Math.round(Math.random()) - 1;
+            var x: number = 480  + plusMinus * (550 + Math.random() * 100);
+            var y: number = 230 + Math.random() * 350;
             submarine = this.submarines.create(x, y, 'submarineLongImg', "0",
                                                true);
             submarine.anchor.x = 0.5;
             submarine.anchor.y = 0.5;
+
+            // Hack! Should be: Phaser.Easing.Linear.None;
+            var LinearNone = Phaser.Easing['Linear'].None;
+            var duration = 5000 + Math.random() * 5000;
+            this.game.add.tween(submarine).to({x: 50}, duration, LinearNone,
+                                              false, 0, false)
+                                          .to({x: 880}, duration, LinearNone,
+                                              false, 0, false)
+                                          .loop().start(1);
         }
 
         this.barrel = this.game.add.sprite(9999, 9999, 'barrelImg');
