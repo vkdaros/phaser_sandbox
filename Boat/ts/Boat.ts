@@ -181,8 +181,7 @@ class Boat extends Scene {
         expl = this.game.add.sprite(x, y, 'explosionAnim', 0);
         expl.anchor.setTo(0.5, 0.5);
         expl.animations.add('exploding',
-                            [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,
-                            18,19,20],
+                            [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],
                             20, false, true);
         expl.animations.play('exploding', 20, false);
     }
