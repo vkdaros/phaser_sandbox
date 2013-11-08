@@ -1,0 +1,29 @@
+class Ex {
+    private loopCounter: number;
+
+    // The next function does...
+    constructor() {
+        var end: boolean;   // Inline comment.
+        loopCounter = 1;
+        while (loopCounter < 10) {
+            //print
+        }
+        end = true;
+        if (end) {
+            //
+        }
+        else if (!end) {
+            //
+        }
+        else {
+            for (uasdfasdf asdfas df as dfasdf; i < 10000000000000000000000;
+                 i++,
+                 bola = false) {
+            }
+        }
+    }
+
+    private otherMethod() {
+        //
+    }
+}

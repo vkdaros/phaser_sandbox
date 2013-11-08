@@ -4,10 +4,14 @@
 class Boat extends Scene {
     private boat: Phaser.Sprite;
     private submarines: Phaser.Group;
-    private barrel: Phaser.Sprite;
+    private barrels: Phaser.Group;
+    private bombs: Phaser.Group;
+    private isBoatShooting: boolean;
+    private lastSubmarineShot: number;
 
     constructor(game: Phaser.Game) {
         super(game);
+        this.isBoatShooting = false;
     }
 
     public create(): void {
@@ -40,9 +44,25 @@ class Boat extends Scene {
                                           .loop().start(1);
         }
 
-        this.barrel = this.game.add.sprite(9999, 9999, 'barrelImg');
-        this.barrel.anchor.x = 0.5;
-        this.barrel.anchor.y = 0.0;
+        this.barrels = this.game.add.group(null, "barrels");
+        for (var i: number = 0; i < 30; i++) {
+            var barrel: Phaser.Sprite;
+            barrel = this.barrels.create(9999, 9999, "barrelImg", "0", true);
+            barrel.anchor.x = 0.5;
+            barrel.anchor.y = 0.5;
+            barrel.kill();
+        }
+
+        this.bombs = this.game.add.group(null, "bombs");
+        for (var i: number = 0; i < 30; i++) {
+            var bomb: Phaser.Sprite;
+            bomb = this.bombs.create(9999, 9999, "bombImg", "0", true);
+            bomb.anchor.x = 0.5;
+            bomb.anchor.y = 0.5;
+            bomb.kill();
+        }
+
+        this.lastSubmarineShot = this.game.time.totalElapsedSeconds();
     }
 
     public update(): void {
@@ -59,25 +79,83 @@ class Boat extends Scene {
 
 
         // throw barrel
-        if(keyboard.isDown(keys.DOWN)) {
-            if(this.barrel.body.y > 650) {
-                this.barrel.body.y = this.boat.position.y + 30;
-                this.barrel.body.x = this.boat.position.x;
+        if (!this.isBoatShooting) {
+            if (keyboard.isDown(keys.DOWN)) {
+                var barrel: Phaser.Sprite = this.barrels.getFirstDead();
+                if (barrel) {
+                    barrel.body.y = this.boat.position.y + 30;
+                    barrel.body.x = this.boat.position.x;
+                    barrel.revive();
+                    this.isBoatShooting = true;
+                }
             }
         }
-        this.barrel.body.velocity.y = 100;
+        else {
+            if (!keyboard.isDown(keys.DOWN)) {
+                this.isBoatShooting = false;
+            }
+        }
+
+        // submarines can shoot too!!
+        if (this.game.time.totalElapsedSeconds() > this.lastSubmarineShot+2) {
+            this.lastSubmarineShot = this.game.time.totalElapsedSeconds();
+            this.submarines.forEach(this.handleSubmarineShot, this, true);
+        }
+
+        // handle bomb movement
+        this.bombs.forEach(this.handleBombMovement, this, true);
+
+        // handle barrel movement
+        this.barrels.forEach(this.handleBarrelMovement, this, true);
+
+        // handle collision bomb x boat
+        this.game.physics.collide(this.bombs, this.boat,
+                                  this.handleBombsBoatCollision,
+                                  null, this);
 
         // handle collision barrel x submarines
-        this.game.physics.collide(this.barrel, this.submarines,
-                                  this.handleBarrelSubmarinesCollision,
+        this.game.physics.collide(this.barrels, this.submarines,
+                                  this.handleBarrelSubmarineCollision,
                                   null, this);
     }
 
-    private handleBarrelSubmarinesCollision(barrel: Phaser.Sprite,
-                                            submarine: Phaser.Sprite): void {
-        barrel.reset(9999, 9999);
+    private handleSubmarineShot(submarine: Phaser.Sprite): void {
+        var bomb: Phaser.Sprite = this.bombs.getFirstDead();
+        if (bomb) {
+            bomb.body.y = submarine.position.y;
+            bomb.body.x = submarine.position.x;
+            bomb.revive();
+        }
+    }
+
+    private handleBarrelSubmarineCollision(barrel: Phaser.Sprite,
+                                           submarine: Phaser.Sprite): void {
+        barrel.kill();
         submarine.kill();
-        if(this.submarines.countLiving() == 0)
+        if (this.submarines.countLiving() == 0) {
+            this.barrels.forEach((b) => b.kill(), this, false);
+            this.bombs.forEach((b) => b.kill(), this, false);
             this.setScene('Win');
+        }
+    }
+
+    private handleBarrelMovement(barrel: Phaser.Sprite): void {
+        barrel.body.velocity.y = 100;
+        if (barrel.body.y > 650) {
+            barrel.kill();
+        }
+    }
+
+    private handleBombMovement(bomb: Phaser.Sprite): void {
+        bomb.body.velocity.y = -100;
+        if(bomb.body.y < -50) {
+            bomb.kill();
+        }
+    }
+
+    private handleBombsBoatCollision(boat: Phaser.Sprite,
+                                     bomb: Phaser.Sprite): void {
+        bomb.kill();
+        boat.body.reset();
     }
 }
