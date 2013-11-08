@@ -660,7 +660,7 @@ declare module Phaser {
             group(parent: any, name: string): Phaser.Group;
             audio(key: string, volume: number, loop: boolean): Phaser.Sound;
             tileSprite(x: number, y: number, width: number, height: number, key?: string, frame?: number): Phaser.TileSprite;
-            text(x: number, y: number, text: string, style: Object): Phaser.Text;
+            text(x: number, y: number, text: string, style: any): Phaser.Text;
             button(x: number, y: number, key: string, callback: Function, callbackContext: Object, overFrame?: number, outFrame?: number, downFrame?: number): Phaser.Button;
             graphics(x: number, y: number): Phaser.Graphics;
             emitter(x: number, y: number, maxParticles: number): Phaser.Particles.Arcade.Emitter;
