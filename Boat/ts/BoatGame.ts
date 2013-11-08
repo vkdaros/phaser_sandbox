@@ -24,6 +24,9 @@ class BoatGame {
                              'assets/images/submarine_long.png');
         this.game.load.image('barrelImg', 'assets/images/barrel.png');
         this.game.load.image('bombImg', 'assets/images/bomb.png');
+        this.game.load.spritesheet('explosionAnim',
+                                   'assets/images/explosionframes.png',
+                                   128, 128, 20);
     }
 
     public create(): void {

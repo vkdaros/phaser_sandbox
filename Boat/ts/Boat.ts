@@ -8,13 +8,17 @@ class Boat extends Scene {
     private bombs: Phaser.Group;
     private isBoatShooting: boolean;
     private lastSubmarineShot: number;
+    private lives: number;
+    private hud: Phaser.Text;
 
     constructor(game: Phaser.Game) {
         super(game);
-        this.isBoatShooting = false;
     }
 
     public create(): void {
+        this.isBoatShooting = false;
+        this.lives = 3;
+
         this.game.add.sprite(0, 0, 'backgroundImg');
 
         this.boat = this.game.add.sprite(320, 170, 'boatImg');
@@ -63,12 +67,20 @@ class Boat extends Scene {
         }
 
         this.lastSubmarineShot = this.game.time.totalElapsedSeconds();
+
+        var fontConfig = {
+            font: "48px Arial",
+            fill: "#222",
+            align: "left"
+        };
+        this.hud = this.game.add.text(10, 10, "", fontConfig);
     }
 
     public update(): void {
         var keyboard = this.game.input.keyboard;
         var keys = Phaser.Keyboard;
 
+        // boat movement
         this.boat.body.acceleration.x = 0;
         if (keyboard.isDown(keys.LEFT)) {
             this.boat.body.acceleration.x = -50;
@@ -77,6 +89,8 @@ class Boat extends Scene {
             this.boat.body.acceleration.x = 50;
         }
 
+        // hud
+        this.hud['content'] = "lives: " + this.lives;
 
         // throw barrel
         if (!this.isBoatShooting) {
@@ -132,9 +146,8 @@ class Boat extends Scene {
                                            submarine: Phaser.Sprite): void {
         barrel.kill();
         submarine.kill();
+        this.createExplosionAt(barrel.body.x, barrel.body.y);
         if (this.submarines.countLiving() == 0) {
-            this.barrels.forEach((b) => b.kill(), this, false);
-            this.bombs.forEach((b) => b.kill(), this, false);
             this.setScene('Win');
         }
     }
@@ -148,7 +161,7 @@ class Boat extends Scene {
 
     private handleBombMovement(bomb: Phaser.Sprite): void {
         bomb.body.velocity.y = -100;
-        if(bomb.body.y < -50) {
+        if (bomb.body.y < 200) {
             bomb.kill();
         }
     }
@@ -157,5 +170,27 @@ class Boat extends Scene {
                                      bomb: Phaser.Sprite): void {
         bomb.kill();
         boat.body.reset();
+        this.createExplosionAt(bomb.body.x, bomb.body.y);
+        if (--this.lives <= 0) {
+            this.setScene('Lose');
+        }
+    }
+
+    private createExplosionAt(x: number, y: number) {
+        var expl: Phaser.Sprite;
+        expl = this.game.add.sprite(x, y, 'explosionAnim', 0);
+        expl.anchor.setTo(0.5, 0.5);
+        expl.animations.add('exploding',
+                            [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,
+                            18,19,20],
+                            20, false, true);
+        expl.animations.play('exploding', 20, false);
+    }
+
+    public setScene(sceneName: string) {
+        this.barrels.forEach((b) => b.kill(), this, false);
+        this.bombs.forEach((b) => b.kill(), this, false);
+        this.submarines.forEach((b) => b.kill(), this, false);
+        super.setScene(sceneName);
     }
 }
