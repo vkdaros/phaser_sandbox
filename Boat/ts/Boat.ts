@@ -1,6 +1,62 @@
 ///<reference path='phaser.d.ts'/>
 ///<reference path="Scene.ts"/>
 
+class Submarine extends Phaser.Sprite {
+    public game: Phaser.Game;
+    private duration: number;
+
+    constructor(game: Phaser.Game) {
+        this.game = game;
+        super(game, 0, 0, "submarineLongImg", 0);
+        this.create();
+    }
+
+    public create(): void {
+        var plusMinus: number = 2 * Math.round(Math.random()) - 1;
+        this.x = 480  + plusMinus * (550 + Math.random() * 100);
+        this.y = 230 + Math.random() * 350;
+        this.duration = 5000 + Math.random() * 5000;
+
+        this.anchor.x = 0.5;
+        this.anchor.y = 0.5;
+
+        this.animations.add('turnLeft', [0]);
+        this.animations.add('turnRight', [1]);
+
+        if (plusMinus < 0) {
+            this.moveRight();
+        }
+        else {
+            this.moveLeft();
+        }
+        console.log("Created");
+    }
+
+    private moveRight() {
+        // Hack! Should be: Phaser.Easing.Linear.None;
+        var LinearNone = Phaser.Easing['Linear'].None;
+
+        console.log("To the right!");
+        this.animations.play('turnRight');
+        var t: Phaser.Tween = this.game.add.tween(this);
+        t.to({x: 900}, this.duration, LinearNone);
+        t.onComplete.add(this.moveLeft, this);
+        t.start(1);
+    }
+
+    private moveLeft() {
+        // Hack! Should be: Phaser.Easing.Linear.None;
+        var LinearNone = Phaser.Easing['Linear'].None;
+
+        console.log("To the left!");
+        this.animations.play('turnLeft');
+        var t: Phaser.Tween = this.game.add.tween(this);
+        t.to({x: 50}, this.duration, LinearNone);
+        t.onComplete.add(this.moveRight, this);
+        t.start(1);
+    }
+}
+
 class Boat extends Scene {
     private boat: Phaser.Sprite;
     private submarines: Phaser.Group;
@@ -17,7 +73,7 @@ class Boat extends Scene {
 
     public create(): void {
         this.isBoatShooting = false;
-        this.lives = 3;
+        this.lives = 300;
 
         this.game.add.sprite(0, 0, 'backgroundImg');
 
@@ -29,26 +85,8 @@ class Boat extends Scene {
 
         this.submarines = this.game.add.group(null, 'submarines');
         for (var i: number = 0; i < 5; i++) {
-            var submarine: Phaser.Sprite;
-            var plusMinus: number = 2 * Math.round(Math.random()) - 1;
-            var x: number = 480  + plusMinus * (550 + Math.random() * 100);
-            var y: number = 230 + Math.random() * 350;
-            submarine = this.submarines.create(x, y, 'submarineLongImg', "0",
-                                               true);
-            submarine.anchor.x = 0.5;
-            submarine.anchor.y = 0.5;
-
-            submarine.animations.add('turnLeft', [0]);
-            submarine.animations.add('turnRight', [1]);
-
-            // Hack! Should be: Phaser.Easing.Linear.None;
-            var LinearNone = Phaser.Easing['Linear'].None;
-            var duration = 5000 + Math.random() * 5000;
-            this.game.add.tween(submarine).to({x: 50}, duration, LinearNone,
-                                              false, 0, false)
-                                          .to({x: 880}, duration, LinearNone,
-                                              false, 0, false)
-                                          .loop().start(1);
+            var submarine = new Submarine(this.game);
+            this.submarines.add(submarine);
         }
 
         this.barrels = this.game.add.group(null, "barrels");
