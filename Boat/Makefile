@@ -6,4 +6,4 @@ all: $(TS_DIR)/*.ts
 	$(TSC) $(TS_DIR)/*.ts -out $(JS_DIR)/main.js
 
 clean:
-	rm $(JS_DIR)/*.js
+	rm $(JS_DIR)/main.js
