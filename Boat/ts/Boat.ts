@@ -30,6 +30,9 @@ class Boat extends Scene {
             submarine.anchor.x = 0.5;
             submarine.anchor.y = 0.5;
 
+            submarine.animations.add('turnLeft', [0]);
+            submarine.animations.add('turnRight', [1]);
+
             // Hack! Should be: Phaser.Easing.Linear.None;
             var LinearNone = Phaser.Easing['Linear'].None;
             var duration = 5000 + Math.random() * 5000;

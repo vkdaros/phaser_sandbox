@@ -20,10 +20,12 @@ class BoatGame {
     public preload(): void {
         this.game.load.image('backgroundImg', 'assets/images/background.png');
         this.game.load.image('boatImg', 'assets/images/boat.png');
-        this.game.load.image('submarineLongImg',
-                             'assets/images/submarine_long.png');
         this.game.load.image('barrelImg', 'assets/images/barrel.png');
         this.game.load.image('bombImg', 'assets/images/bomb.png');
+
+        // Each submarine frame is 145x30 pixels and there are 2 of them.
+        this.game.load.spritesheet('submarineLongImg',
+                             'assets/images/submarine_long.png', 145, 30, 2);
     }
 
     public create(): void {
