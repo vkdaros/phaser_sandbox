@@ -1,21 +1,22 @@
 Marco 1:
-    Barco atirar
-    Submarinos se mexendo
-    Submarinos atirando
-    Tela Win
-    Tela Lose
-    Matar todos submarinos -> Win (tela nova)
-    Se tomar tiro -> Lose (tela nova)
+    Ok. Barco atirar
+    Ok. Submarinos se mexendo
+    Ok. Submarinos atirando
+    Ok. Tela Win
+    Ok. Tela Lose
+    Ok. Matar todos submarinos -> Win (tela nova)
+    Ok. Se tomar tiro -> Lose (tela nova)
 
 Marco 2:
-    Inverter os submarinos horizontalmente
-    Vários tiros do barco
-    Vários tiros dos submarinos
-    Contador de vida (3 vidas)
+    Ok. Inverter os submarinos horizontalmente
+    Ok. Vários tiros do barco
+    Ok. Vários tiros dos submarinos
+    Ok. Contador de vida (3 vidas)
     Matar todos submarinos -> Level 2 (mais submarinos);
     Level2 -> Win;
     Animação de explosão
     Som
+    Teclas não moverem a página
 
 Marco 3:
     Funcionar no celular.
