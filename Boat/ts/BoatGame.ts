@@ -30,6 +30,9 @@ class BoatGame {
         // Each submarine frame is 145x30 pixels and there are 2 of them.
         this.game.load.spritesheet('submarineLongImg',
                              'assets/images/submarine_long.png', 145, 30, 2);
+
+        this.game.load.audio('explosionSound',
+                             ['assets/sounds/underwater_explosion.ogg']);
     }
 
     public create(): void {
