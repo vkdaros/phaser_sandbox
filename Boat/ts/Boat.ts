@@ -7,8 +7,8 @@ class Boat extends Scene {
     private submarines: Phaser.Group;
     private barrels: Phaser.Group;
     private bombs: Phaser.Group;
-    private isBoatShooting: boolean;
     private lastSubmarineShot: number;
+    private lastBoatShot: number;
     private lives: number;
     private hud: Phaser.Text;
     private explosionSound: Phaser.Sound;
@@ -18,14 +18,13 @@ class Boat extends Scene {
     }
 
     public create(): void {
-        this.isBoatShooting = false;
         this.lives = 300;
 
         this.game.add.sprite(0, 0, 'backgroundImg');
 
         this.boat = this.game.add.sprite(320, 170, 'boatImg');
         this.boat.body.maxVelocity.x = 100;
-        this.boat.body.drag.x = 50;
+        this.boat.body.drag.x = 20;
         this.boat.anchor.x = 0.5;
         this.boat.anchor.y = 0.5;
 
@@ -54,6 +53,7 @@ class Boat extends Scene {
         }
 
         this.lastSubmarineShot = this.game.time.totalElapsedSeconds();
+        this.lastBoatShot = -100;
 
         var fontConfig = {
             font: "48px Arial",
@@ -72,35 +72,32 @@ class Boat extends Scene {
         // boat movement
         this.boat.body.acceleration.x = 0;
         if (keyboard.isDown(keys.LEFT)) {
-            this.boat.body.acceleration.x = -50;
+            this.boat.body.acceleration.x = -100;
         }
         if (keyboard.isDown(keys.RIGHT)) {
-            this.boat.body.acceleration.x = 50;
+            this.boat.body.acceleration.x = 100;
         }
 
         // hud
         this.hud['content'] = "lives: " + this.lives;
 
         // throw barrel
-        if (!this.isBoatShooting) {
+        if (this.game.time.totalElapsedSeconds() > this.lastBoatShot + 1) {
             if (keyboard.isDown(keys.SPACEBAR)) {
                 var barrel: Phaser.Sprite = this.barrels.getFirstDead();
                 if (barrel) {
                     barrel.body.y = this.boat.position.y + 30;
                     barrel.body.x = this.boat.position.x;
                     barrel.revive();
-                    this.isBoatShooting = true;
                 }
-            }
-        }
-        else {
-            if (!keyboard.isDown(keys.SPACEBAR)) {
-                this.isBoatShooting = false;
+                this.lastBoatShot = this.game.time.totalElapsedSeconds();
             }
         }
 
         // submarines can shoot too!!
-        if (this.game.time.totalElapsedSeconds() > this.lastSubmarineShot+2) {
+        if (this.game.time.totalElapsedSeconds() >
+            this.lastSubmarineShot + 3) {
+
             this.lastSubmarineShot = this.game.time.totalElapsedSeconds();
             this.submarines.forEach(this.handleSubmarineShot, this, true);
         }
