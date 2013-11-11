@@ -16,7 +16,7 @@ class Menu extends Scene {
         };
         this.text = this.game.add.text(this.game.world.centerX,
                                        this.game.world.centerY,
-                                       "Press SPACE to play.\nArrows to move.",
+                                       "Press SPACE to play.\nArrows to move.\nSPACE to fire.",
                                        fontConfig);
         this.text.anchor.x = 0.5;
         this.text.anchor.y = 0.5;
