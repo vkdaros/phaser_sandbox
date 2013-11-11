@@ -81,6 +81,9 @@ class Boat extends Scene {
             this.boat.body.acceleration.x = 100;
         }
 
+        // lock boat inside the arena
+        this.boat.body.collideWorldBounds = true;
+
         // hud
         this.hudLevel["content"] = "level: " + this.level;
         this.hudLives["content"] = "lives: " + this.lives;
@@ -167,7 +170,13 @@ class Boat extends Scene {
     private handleBombsBoatCollision(boat: Phaser.Sprite,
                                      bomb: Phaser.Sprite): void {
         bomb.kill();
+
+        var acc = boat.body.acceleration.x;
+        var vel = boat.body.velocity.x;
         boat.body.reset();
+        boat.body.velocity.x = vel/2;
+        boat.body.acceleration.x = acc/2;
+
         this.createExplosionAt(bomb.body.x, bomb.body.y);
         if (--this.lives == 0) {
             this.setScene("Lose");
