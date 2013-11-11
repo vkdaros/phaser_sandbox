@@ -27,7 +27,7 @@ class Lose extends Scene {
         var keys = Phaser.Keyboard;
 
         if (keyboard.isDown(keys.SPACEBAR)) {
-            this.setScene('Boat');
+            this.setScene("Boat");
         }
     }
 }

@@ -1,4 +1,4 @@
-///<reference path='phaser.d.ts'/>
+///<reference path="phaser.d.ts"/>
 
 class Submarine extends Phaser.Sprite {
     public game: Phaser.Game;
@@ -19,8 +19,8 @@ class Submarine extends Phaser.Sprite {
         this.anchor.x = 0.5;
         this.anchor.y = 0.5;
 
-        this.animations.add('turnLeft', [0]);
-        this.animations.add('turnRight', [1]);
+        this.animations.add("turnLeft", [0]);
+        this.animations.add("turnRight", [1]);
 
         if (plusMinus < 0) {
             this.moveRight();
@@ -33,10 +33,10 @@ class Submarine extends Phaser.Sprite {
 
     private moveRight() {
         // Hack! Should be: Phaser.Easing.Linear.None;
-        var LinearNone = Phaser.Easing['Linear'].None;
+        var LinearNone = Phaser.Easing["Linear"].None;
 
         console.log("To the right!");
-        this.animations.play('turnRight');
+        this.animations.play("turnRight");
         var t: Phaser.Tween = this.game.add.tween(this);
         t.to({x: 900}, this.duration, LinearNone);
         t.onComplete.add(this.moveLeft, this);
@@ -45,10 +45,10 @@ class Submarine extends Phaser.Sprite {
 
     private moveLeft() {
         // Hack! Should be: Phaser.Easing.Linear.None;
-        var LinearNone = Phaser.Easing['Linear'].None;
+        var LinearNone = Phaser.Easing["Linear"].None;
 
         console.log("To the left!");
-        this.animations.play('turnLeft');
+        this.animations.play("turnLeft");
         var t: Phaser.Tween = this.game.add.tween(this);
         t.to({x: 50}, this.duration, LinearNone);
         t.onComplete.add(this.moveRight, this);

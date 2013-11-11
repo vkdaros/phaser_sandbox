@@ -1,4 +1,4 @@
-///<reference path='phaser.d.ts'/>
+///<reference path="phaser.d.ts"/>
 ///<reference path="Scene.ts"/>
 ///<reference path="Submarine.ts"/>
 
@@ -23,15 +23,15 @@ class Boat extends Scene {
         this.lives = 5;
         this.level = 1;
 
-        this.game.add.sprite(0, 0, 'backgroundImg');
+        this.game.add.sprite(0, 0, "backgroundImg");
 
-        this.boat = this.game.add.sprite(320, 170, 'boatImg');
+        this.boat = this.game.add.sprite(320, 170, "boatImg");
         this.boat.body.maxVelocity.x = 100;
         this.boat.body.drag.x = 20;
         this.boat.anchor.x = 0.5;
         this.boat.anchor.y = 0.5;
 
-        this.submarines = this.game.add.group(null, 'submarines');
+        this.submarines = this.game.add.group(null, "submarines");
         this.jumpToLevel(this.level);
 
         this.barrels = this.game.add.group(null, "barrels");
@@ -62,8 +62,8 @@ class Boat extends Scene {
         };
         this.hud = this.game.add.text(10, 10, "", fontConfig);
 
-        this.explosionSound = this.game.add.audio('explosionSound', 1, false);
-        this.explosions = this.game.add.group(null, 'explosions');
+        this.explosionSound = this.game.add.audio("explosionSound", 1, false);
+        this.explosions = this.game.add.group(null, "explosions");
     }
 
     public update(): void {
@@ -80,7 +80,7 @@ class Boat extends Scene {
         }
 
         // hud
-        this.hud['content'] = "lives: " + this.lives;
+        this.hud["content"] = "lives: " + this.lives;
 
         // throw barrel
         if (this.game.time.totalElapsedSeconds() > this.lastBoatShot + 1) {
@@ -167,18 +167,18 @@ class Boat extends Scene {
         boat.body.reset();
         this.createExplosionAt(bomb.body.x, bomb.body.y);
         if (--this.lives == 0) {
-            this.setScene('Lose');
+            this.setScene("Lose");
         }
     }
 
     private createExplosionAt(x: number, y: number): void {
         var expl: Phaser.Sprite;
-        expl = this.explosions.create(x, y, 'explosionAnim', "0", true);
+        expl = this.explosions.create(x, y, "explosionAnim", "0", true);
         expl.anchor.setTo(0.5, 0.5);
-        expl.animations.add('exploding',
+        expl.animations.add("exploding",
                             [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],
                             20, false, true);
-        expl.animations.play('exploding', 20, false, true);
+        expl.animations.play("exploding", 20, false, true);
         this.explosionSound.play("", 0, 0.8, false);
     }
 
@@ -191,7 +191,7 @@ class Boat extends Scene {
 
     private jumpToLevel(level: number): void {
         if (level >= 10) {
-            this.setScene('Win');
+            this.setScene("Win");
         }
         else {
             this.level = level;
