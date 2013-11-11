@@ -3,9 +3,15 @@
 class Submarine extends Phaser.Sprite {
     public game: Phaser.Game;
     private duration: number;
+    private coolDown: number; // Seconds between shots.
+    private nextShotTime: number;
+    private createShot: Function;
+    private bombs: Phaser.Group;
 
-    constructor(game: Phaser.Game) {
+    constructor(game: Phaser.Game, createShot: Function, bombs: Phaser.Group) {
         this.game = game;
+        this.createShot = createShot;
+        this.bombs = bombs;
         super(game, 0, 0, "submarineLongImg", 0);
         this.create();
     }
@@ -15,6 +21,9 @@ class Submarine extends Phaser.Sprite {
         this.x = 480  + plusMinus * (550 + Math.random() * 100);
         this.y = 230 + Math.random() * 350;
         this.duration = 5000 + Math.random() * 5000;
+        this.coolDown = 2 + Math.random() * 2; 
+        this.nextShotTime = this.game.time.totalElapsedSeconds() +
+                            this.coolDown;
 
         this.anchor.x = 0.5;
         this.anchor.y = 0.5;
@@ -28,14 +37,12 @@ class Submarine extends Phaser.Sprite {
         else {
             this.moveLeft();
         }
-        console.log("Created");
     }
 
     private moveRight() {
         // Hack! Should be: Phaser.Easing.Linear.None;
         var LinearNone = Phaser.Easing["Linear"].None;
 
-        console.log("To the right!");
         this.animations.play("turnRight");
         var t: Phaser.Tween = this.game.add.tween(this);
         t.to({x: 900}, this.duration, LinearNone);
@@ -47,11 +54,18 @@ class Submarine extends Phaser.Sprite {
         // Hack! Should be: Phaser.Easing.Linear.None;
         var LinearNone = Phaser.Easing["Linear"].None;
 
-        console.log("To the left!");
         this.animations.play("turnLeft");
         var t: Phaser.Tween = this.game.add.tween(this);
         t.to({x: 50}, this.duration, LinearNone);
         t.onComplete.add(this.moveRight, this);
         t.start(1);
+    }
+
+    public shoot() {
+        if (this.game.time.totalElapsedSeconds() >= this.nextShotTime) {
+            this.createShot(this.x, this.y, this.bombs);
+            this.nextShotTime = this.game.time.totalElapsedSeconds() +
+                                this.coolDown;
+        }
     }
 }

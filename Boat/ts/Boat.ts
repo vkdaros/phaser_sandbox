@@ -8,7 +8,6 @@ class Boat extends Scene {
     private barrels: Phaser.Group;
     private bombs: Phaser.Group;
     private explosions: Phaser.Group;
-    private lastSubmarineShot: number;
     private lastBoatShot: number;
     private lives: number;
     private level: number;
@@ -32,7 +31,6 @@ class Boat extends Scene {
         this.boat.anchor.y = 0.5;
 
         this.submarines = this.game.add.group(null, "submarines");
-        this.jumpToLevel(this.level);
 
         this.barrels = this.game.add.group(null, "barrels");
         for (var i: number = 0; i < 30; i++) {
@@ -52,7 +50,6 @@ class Boat extends Scene {
             bomb.kill();
         }
 
-        this.lastSubmarineShot = this.game.time.totalElapsedSeconds();
         this.lastBoatShot = -100;
 
         var fontConfig = {
@@ -64,6 +61,8 @@ class Boat extends Scene {
 
         this.explosionSound = this.game.add.audio("explosionSound", 1, false);
         this.explosions = this.game.add.group(null, "explosions");
+        
+        this.jumpToLevel(this.level);
     }
 
     public update(): void {
@@ -95,13 +94,8 @@ class Boat extends Scene {
             }
         }
 
-        // submarines can shoot too!!
-        if (this.game.time.totalElapsedSeconds() >
-            this.lastSubmarineShot + 3) {
-
-            this.lastSubmarineShot = this.game.time.totalElapsedSeconds();
-            this.submarines.forEach(this.handleSubmarineShot, this, true);
-        }
+        // All submarines tries to fire.
+        this.submarines.forEach((submarine) => submarine.shoot(), this, true);
 
         // handle bomb movement
         this.bombs.forEach(this.handleBombMovement, this, true);
@@ -122,16 +116,17 @@ class Boat extends Scene {
 
     private createSubmarines(submarines: Phaser.Group, n: number) {
         for (var i: number = 0; i < n; i++) {
-            var submarine = new Submarine(this.game);
+            var submarine = new Submarine(this.game, this.submarineShot,
+                                          this.bombs);
             submarines.add(submarine);
         }
     }
 
-    private handleSubmarineShot(submarine: Phaser.Sprite): void {
-        var bomb: Phaser.Sprite = this.bombs.getFirstDead();
+    public submarineShot(x: number, y: number, bombs: Phaser.Group): void {
+        var bomb: Phaser.Sprite = bombs.getFirstDead();
         if (bomb) {
-            bomb.body.y = submarine.position.y;
-            bomb.body.x = submarine.position.x;
+            bomb.body.x = x;
+            bomb.body.y = y;
             bomb.revive();
         }
     }
