@@ -33,6 +33,14 @@ class BoatGame {
     }
 
     public create(): void {
+        // lock keys
+        var keyboard = this.game.input.keyboard;
+        var keys = Phaser.Keyboard;
+        keyboard.addKeyCapture(keys.LEFT);
+        keyboard.addKeyCapture(keys.RIGHT);
+        keyboard.addKeyCapture(keys.SPACEBAR);
+
+        // add scenes
         this.game.state.add('Menu', new Menu(this.game), false);
         this.game.state.add('Boat', new Boat(this.game), false);
         this.game.state.add('Win', new Win(this.game), false);
