@@ -12,11 +12,17 @@ Marco 2:
     Ok. Vários tiros do barco
     Ok. Vários tiros dos submarinos
     Ok. Contador de vida (3 vidas)
-    Matar todos submarinos -> Level 2 (mais submarinos);
-    Level2 -> Win;
-    Animação de explosão
-    Som
-    Teclas não moverem a página
+    Ok. Matar todos submarinos -> Level 2 (mais submarinos);
+    Ok. Level2 -> Win;
+    Ok. Animação de explosão
+    Ok. Som
+    Ok. Teclas não moverem a página
+
+    Limitar movimento do barco
+    Diminuir velocidade do barco ao tomar hit (não parar)
+    Mostrar na tela o contador de nível
+    Feedback de level up
+    Submarino atirando com tempo aleatório
 
 Marco 3:
     Funcionar no celular.

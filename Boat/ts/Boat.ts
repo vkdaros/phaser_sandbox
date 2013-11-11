@@ -7,9 +7,11 @@ class Boat extends Scene {
     private submarines: Phaser.Group;
     private barrels: Phaser.Group;
     private bombs: Phaser.Group;
+    private explosions: Phaser.Group;
     private lastSubmarineShot: number;
     private lastBoatShot: number;
     private lives: number;
+    private level: number;
     private hud: Phaser.Text;
     private explosionSound: Phaser.Sound;
 
@@ -18,7 +20,8 @@ class Boat extends Scene {
     }
 
     public create(): void {
-        this.lives = 300;
+        this.lives = 5;
+        this.level = 1;
 
         this.game.add.sprite(0, 0, 'backgroundImg');
 
@@ -29,10 +32,7 @@ class Boat extends Scene {
         this.boat.anchor.y = 0.5;
 
         this.submarines = this.game.add.group(null, 'submarines');
-        for (var i: number = 0; i < 5; i++) {
-            var submarine = new Submarine(this.game);
-            this.submarines.add(submarine);
-        }
+        this.jumpToLevel(this.level);
 
         this.barrels = this.game.add.group(null, "barrels");
         for (var i: number = 0; i < 30; i++) {
@@ -63,6 +63,7 @@ class Boat extends Scene {
         this.hud = this.game.add.text(10, 10, "", fontConfig);
 
         this.explosionSound = this.game.add.audio('explosionSound', 1, false);
+        this.explosions = this.game.add.group(null, 'explosions');
     }
 
     public update(): void {
@@ -119,6 +120,13 @@ class Boat extends Scene {
                                   null, this);
     }
 
+    private createSubmarines(submarines: Phaser.Group, n: number) {
+        for (var i: number = 0; i < n; i++) {
+            var submarine = new Submarine(this.game);
+            submarines.add(submarine);
+        }
+    }
+
     private handleSubmarineShot(submarine: Phaser.Sprite): void {
         var bomb: Phaser.Sprite = this.bombs.getFirstDead();
         if (bomb) {
@@ -134,7 +142,8 @@ class Boat extends Scene {
         submarine.kill();
         this.createExplosionAt(barrel.body.x, barrel.body.y);
         if (this.submarines.countLiving() == 0) {
-            this.setScene('Win');
+            this.lives++;
+            this.jumpToLevel(this.level + 1);
         }
     }
 
@@ -164,7 +173,7 @@ class Boat extends Scene {
 
     private createExplosionAt(x: number, y: number): void {
         var expl: Phaser.Sprite;
-        expl = this.game.add.sprite(x, y, 'explosionAnim', 0);
+        expl = this.explosions.create(x, y, 'explosionAnim', "0", true);
         expl.anchor.setTo(0.5, 0.5);
         expl.animations.add('exploding',
                             [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],
@@ -178,5 +187,15 @@ class Boat extends Scene {
         this.bombs.forEach((b) => b.kill(), this, false);
         this.submarines.forEach((b) => b.kill(), this, false);
         super.setScene(sceneName);
+    }
+
+    private jumpToLevel(level: number): void {
+        if (level >= 10) {
+            this.setScene('Win');
+        }
+        else {
+            this.level = level;
+            this.createSubmarines(this.submarines, this.level);
+        }
     }
 }
