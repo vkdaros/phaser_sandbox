@@ -58,7 +58,9 @@ class Boat extends Scene {
             fill: "#222",
             align: "left"
         };
-        this.hudLevel = this.game.add.text(800, 10, "", fontConfig);
+        this.hudLevel = this.game.add.text(this.game.width - 10, 10, "",
+                                           fontConfig);
+        this.hudLevel.anchor.x = 1;
         this.hudLives = this.game.add.text(10, 10, "", fontConfig);
 
         this.explosionSound = this.game.add.audio("explosionSound", 1, false);
@@ -84,8 +86,8 @@ class Boat extends Scene {
         this.boat.body.collideWorldBounds = true;
 
         // hud
-        this.hudLevel["content"] = "level: " + this.level;
-        this.hudLives["content"] = "lives: " + this.lives;
+        this.hudLevel["content"] = "Level: " + this.level;
+        this.hudLives["content"] = "Lives: " + this.lives;
 
         // throw barrel
         if (this.game.time.totalElapsedSeconds() > this.lastBoatShot + 1) {
