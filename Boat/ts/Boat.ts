@@ -32,9 +32,8 @@ class Boat extends Scene {
         this.boat.anchor.y = 0.5;
 
         var height = this.boat.body.height;
-        var oldWidth = this.boat.body.width;
-        var newWidth = oldWidth * 0.95;
-        //this.boat.body.setSize(newWidth, height, (oldWidth - newWidth)/2, 0);
+        var width = 0.9 * this.boat.body.width;
+        this.boat.body.setSize(width, height, 0, 0);
 
         this.submarines = this.game.add.group(null, "submarines");
 
@@ -44,6 +43,9 @@ class Boat extends Scene {
             barrel = this.barrels.create(9999, 9999, "barrelImg", "0", true);
             barrel.anchor.x = 0.5;
             barrel.anchor.y = 0.5;
+            var width = barrel.body.width * 1.5;
+            var height = barrel.body.height * 1.5;
+            barrel.body.setSize(width, height, 0, 0)
             barrel.kill();
         }
 
@@ -102,6 +104,7 @@ class Boat extends Scene {
                     barrel.body.y = this.boat.position.y + 30;
                     barrel.body.x = this.boat.position.x;
                     barrel.revive();
+                    barrel.body.velocity.y = 100;
                 }
                 this.lastBoatShot = this.game.time.totalElapsedSeconds();
             }
@@ -156,7 +159,6 @@ class Boat extends Scene {
     }
 
     private handleBarrelMovement(barrel: Phaser.Sprite): void {
-        barrel.body.velocity.y = 100;
         if (barrel.body.y > 650) {
             barrel.kill();
         }
@@ -234,13 +236,11 @@ class Boat extends Scene {
         t.start(1);
     }
 
-
-
-
-
     public render(): void {
-        var draw = (s) => this.game.debug.renderSpriteBody(s, "rgba(0,255,0,0.7)");
+        var draw = (s) => this.game.debug.renderSpriteBody(s, "rgba(0,255,0,0.5)");
         draw(this.boat);
         this.submarines.forEach((submarine) => draw(submarine), this, true);
+        this.barrels.forEach((barrel) => draw(barrel), this, true);
+        this.bombs.forEach((bomb) => draw(bomb), this, true);
     }
 }
