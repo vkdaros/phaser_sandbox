@@ -31,6 +31,11 @@ class Boat extends Scene {
         this.boat.anchor.x = 0.5;
         this.boat.anchor.y = 0.5;
 
+        var height = this.boat.body.height;
+        var oldWidth = this.boat.body.width;
+        var newWidth = oldWidth * 0.95;
+        //this.boat.body.setSize(newWidth, height, (oldWidth - newWidth)/2, 0);
+
         this.submarines = this.game.add.group(null, "submarines");
 
         this.barrels = this.game.add.group(null, "barrels");
@@ -225,5 +230,15 @@ class Boat extends Scene {
         t = this.game.add.tween(text);
         t.to( {y: 0, alpha: 0}, 1500, Phaser.Easing["Linear"].None);
         t.start(1);
+    }
+
+
+
+
+
+    public render(): void {
+        var draw = (s) => this.game.debug.renderSpriteBody(s, "rgba(0,255,0,0.7)");
+        draw(this.boat);
+        this.submarines.forEach((submarine) => draw(submarine), this, true);
     }
 }

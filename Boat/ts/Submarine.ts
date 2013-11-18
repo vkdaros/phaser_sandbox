@@ -28,6 +28,11 @@ class Submarine extends Phaser.Sprite {
         this.anchor.x = 0.5;
         this.anchor.y = 0.5;
 
+        var height = this.body.height;
+        var oldWidth = this.body.width;
+        var newWidth = oldWidth * 1.05;
+        this.body.setSize(newWidth, height, (oldWidth - newWidth)/2, 0);
+
         this.animations.add("turnLeft", [0]);
         this.animations.add("turnRight", [1]);
 
