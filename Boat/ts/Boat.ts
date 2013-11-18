@@ -136,10 +136,15 @@ class Boat extends Scene {
     private hitTest(groupA: Phaser.Group, groupB: Phaser.Group,
                     overlapCallback: Function, processCallback?: Function,
                     callbackContext?: Object) {
+        overlapCallback = overlapCallback || null;
+        processCallback = processCallback || null;
+        callbackContext = callbackContext || overlapCallback;
+
         var overlaps = this.game.physics['overlap'];
         var handleCollision =
             (a, b) => overlapCallback.call(callbackContext, a, b);
         var proc = processCallback;
+
         groupA.forEach((a) => {
             groupB.forEach((b) => {
                 if(overlaps(a, b)) {
@@ -262,5 +267,9 @@ class Boat extends Scene {
         this.submarines.forEach((submarine) => draw(submarine), this, true);
         this.barrels.forEach((barrel) => draw(barrel), this, true);
         this.bombs.forEach((bomb) => draw(bomb), this, true);
+
+        this.game.debug.renderPointer(this.game.input.mousePointer);
+        this.game.debug.renderPointer(this.game.input.pointer1);
+        this.game.debug.renderPointer(this.game.input.pointer2);
     }
 }
