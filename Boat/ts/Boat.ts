@@ -89,6 +89,32 @@ class Boat extends Scene {
             this.boat.body.acceleration.x = 100;
         }
 
+        var pointer: Phaser.Pointer = this.game.input.activePointer;
+        if (pointer.isDown) {
+            var marginFraction = 0.35;
+            var leftBorder = this.game.world.width * marginFraction;
+            var rightBorder = this.game.world.width * (1 - marginFraction);
+            if (pointer.screenX < leftBorder) {
+                this.boat.body.acceleration.x = -100;
+            }
+            else if (pointer.screenX > rightBorder) {
+                this.boat.body.acceleration.x = 100;
+            }
+            else {
+                // Drop barrel
+                if (this.game.time.totalElapsedSeconds() > this.lastBoatShot + 1) {
+                    var barrel: Phaser.Sprite = this.barrels.getFirstDead();
+                    if (barrel) {
+                        barrel.body.y = this.boat.position.y + 30;
+                        barrel.body.x = this.boat.position.x;
+                        barrel.revive();
+                        barrel.body.velocity.y = 100;
+                    }
+                    this.lastBoatShot = this.game.time.totalElapsedSeconds();
+                }
+            }
+        }
+
         // lock boat inside the arena
         this.boat.body.collideWorldBounds = true;
 
@@ -268,7 +294,6 @@ class Boat extends Scene {
         this.submarines.forEach((submarine) => draw(submarine), this, true);
         this.barrels.forEach((barrel) => draw(barrel), this, true);
         this.bombs.forEach((bomb) => draw(bomb), this, true);
-
-        this.game.debug.renderPointer(this.game.input.activePointer);
+        //this.game.debug.renderPointer(this.game.input.activePointer);
     }
 }
