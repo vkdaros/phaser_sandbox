@@ -83,10 +83,10 @@ class Boat extends Scene {
         // boat movement
         this.boat.body.acceleration.x = 0;
         if (keyboard.isDown(keys.LEFT)) {
-            this.boat.body.acceleration.x = -100;
+            this.boatToTheLeft();
         }
         if (keyboard.isDown(keys.RIGHT)) {
-            this.boat.body.acceleration.x = 100;
+            this.boatToTheRight();
         }
 
         var pointer: Phaser.Pointer = this.game.input.activePointer;
@@ -95,23 +95,13 @@ class Boat extends Scene {
             var leftBorder = this.game.world.width * marginFraction;
             var rightBorder = this.game.world.width * (1 - marginFraction);
             if (pointer.screenX < leftBorder) {
-                this.boat.body.acceleration.x = -100;
+                this.boatToTheLeft();
             }
             else if (pointer.screenX > rightBorder) {
-                this.boat.body.acceleration.x = 100;
+                this.boatToTheRight();
             }
             else {
-                // Drop barrel
-                if (this.game.time.totalElapsedSeconds() > this.lastBoatShot + 1) {
-                    var barrel: Phaser.Sprite = this.barrels.getFirstDead();
-                    if (barrel) {
-                        barrel.body.y = this.boat.position.y + 30;
-                        barrel.body.x = this.boat.position.x;
-                        barrel.revive();
-                        barrel.body.velocity.y = 100;
-                    }
-                    this.lastBoatShot = this.game.time.totalElapsedSeconds();
-                }
+                this.boatDropBarrel();
             }
         }
 
@@ -122,18 +112,9 @@ class Boat extends Scene {
         this.hudLevel["content"] = "Level: " + this.level;
         this.hudLives["content"] = "Lives: " + this.lives;
 
-        // throw barrel
-        if (this.game.time.totalElapsedSeconds() > this.lastBoatShot + 1) {
-            if (keyboard.isDown(keys.SPACEBAR)) {
-                var barrel: Phaser.Sprite = this.barrels.getFirstDead();
-                if (barrel) {
-                    barrel.body.y = this.boat.position.y + 30;
-                    barrel.body.x = this.boat.position.x;
-                    barrel.revive();
-                    barrel.body.velocity.y = 100;
-                }
-                this.lastBoatShot = this.game.time.totalElapsedSeconds();
-            }
+        // Drop barrel.
+        if (keyboard.isDown(keys.SPACEBAR)) {
+            this.boatDropBarrel();
         }
 
         // All submarines tries to fire.
@@ -157,6 +138,27 @@ class Boat extends Scene {
         this.hitTest(this.barrels, this.submarines,
                      this.handleBarrelSubmarineCollision,
                      null, this);
+    }
+
+    private boatToTheRight(): void {
+        this.boat.body.acceleration.x = 100;
+    }
+
+    private boatToTheLeft(): void {
+        this.boat.body.acceleration.x = -100;
+    }
+
+    private boatDropBarrel(): void {
+        if (this.game.time.totalElapsedSeconds() > this.lastBoatShot + 1) {
+            var barrel: Phaser.Sprite = this.barrels.getFirstDead();
+            if (barrel) {
+                barrel.body.y = this.boat.position.y + 30;
+                barrel.body.x = this.boat.position.x;
+                barrel.revive();
+                barrel.body.velocity.y = 100;
+            }
+            this.lastBoatShot = this.game.time.totalElapsedSeconds();
+        }
     }
 
     private hitTest(groupA: Phaser.Group, groupB: Phaser.Group,
