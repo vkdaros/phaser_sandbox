@@ -7,32 +7,20 @@
 
 class BoatGame {
     private game: Phaser.Game;
+    private loadingText: Phaser.Text;
 
     constructor() {
         var state = new Phaser.State();
-        state.preload = this.preload;
+        state.preload = () => this.preload.call(this);
         state.create = this.create;
 
         this.game = new Phaser.Game(960, 640, Phaser.CANVAS, "", state, false,
                                     false);
     }
 
-    public displayLoadingScreen(percentage: number): void {
-
-    }
-
     public preload(): void {
-        var fontConfig = {
-            font: "48px Arial",
-            fill: "#b55",
-            align: "center"
-        };
-        var text: Phaser.Text;
-        text = this.game.add.text(480, 240, "", fontConfig);
-        text.anchor.setTo(0.5, 0.5);
-        var u = (percentage: number) => (text['content'] = percentage + "%");
-
-        // ---
+        this.setupLoadingScreen();
+        var u = (k) => this.updateLoadingScreen.call(this, k);
 
         u(0);  this.game.load.image("backgroundImg", "assets/images/background.png");
         u(15); this.game.load.image("boatImg", "assets/images/boat.png");
@@ -68,6 +56,20 @@ class BoatGame {
         this.game.state.add("Win", new Win(this.game), false);
         this.game.state.add("Lose", new Lose(this.game), false);
         this.game.state.start("Menu", true, true);
+    }
+
+    private setupLoadingScreen(): void {
+        var fontConfig = {
+            font: "48px Arial",
+            fill: "#b55",
+            align: "center"
+        };
+        this.loadingText = this.game.add.text(480, 240, "", fontConfig);
+        this.loadingText.anchor.setTo(0.5, 0.5);
+    }
+
+    private updateLoadingScreen(percentage: number): void {
+        this.loadingText["content"] = percentage + "%";
     }
 }
 
