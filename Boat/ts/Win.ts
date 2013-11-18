@@ -16,17 +16,14 @@ class Win extends Scene {
         };
         this.text = this.game.add.text(this.game.world.centerX,
                                        this.game.world.centerY,
-                                       "WINNER\nSPACE: play again",
+                                       "WINNER\nTap to play again",
                                        fontConfig);
         this.text.anchor.x = 0.5;
         this.text.anchor.y = 0.5;
     }
 
     public update(): void {
-        var keyboard = this.game.input.keyboard;
-        var keys = Phaser.Keyboard;
-
-        if (keyboard.isDown(keys.SPACEBAR)) {
+        if (this.game.input.activePointer.justPressed()) {
             this.setScene("Boat");
         }
     }

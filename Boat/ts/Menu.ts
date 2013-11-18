@@ -16,17 +16,14 @@ class Menu extends Scene {
         };
         this.text = this.game.add.text(this.game.world.centerX,
                                        this.game.world.centerY,
-                                       "Press SPACE to play.\nArrows to move.\nSPACE to fire.",
+                                       "b04t\ntap to play.",
                                        fontConfig);
         this.text.anchor.x = 0.5;
         this.text.anchor.y = 0.5;
     }
 
     public update(): void {
-        var keyboard = this.game.input.keyboard;
-        var keys = Phaser.Keyboard;
-
-        if (keyboard.isDown(keys.SPACEBAR)) {
+        if (this.game.input.activePointer.justPressed()) {
             this.setScene("Boat");
         }
     }

@@ -135,7 +135,7 @@ class Boat extends Scene {
 
     private hitTest(groupA: Phaser.Group, groupB: Phaser.Group,
                     overlapCallback: Function, processCallback?: Function,
-                    callbackContext?: Object) {
+                    callbackContext?: Object): void {
         overlapCallback = overlapCallback || null;
         processCallback = processCallback || null;
         callbackContext = callbackContext || overlapCallback;
@@ -147,9 +147,10 @@ class Boat extends Scene {
 
         groupA.forEach((a) => {
             groupB.forEach((b) => {
-                if(overlaps(a, b)) {
-                    if(!proc || (proc && proc(a, b)))
+                if (overlaps(a, b)) {
+                    if (!proc || (proc && proc(a, b))) {
                         handleCollision(a, b);
+                    }
                 }
             }, this, false)
         }, this, false);
@@ -268,8 +269,6 @@ class Boat extends Scene {
         this.barrels.forEach((barrel) => draw(barrel), this, true);
         this.bombs.forEach((bomb) => draw(bomb), this, true);
 
-        this.game.debug.renderPointer(this.game.input.mousePointer);
-        this.game.debug.renderPointer(this.game.input.pointer1);
-        this.game.debug.renderPointer(this.game.input.pointer2);
+        this.game.debug.renderPointer(this.game.input.activePointer);
     }
 }
