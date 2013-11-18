@@ -147,7 +147,6 @@ class Boat extends Scene {
             else {
                 this.boatDropBarrel();
             }
-            pointer.isDown = false;
         }
     }
 
