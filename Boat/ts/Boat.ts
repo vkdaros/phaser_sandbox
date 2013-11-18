@@ -125,9 +125,29 @@ class Boat extends Scene {
                                   null, this);
 
         // handle collision barrel x submarines
-        this.game.physics.collide(this.barrels, this.submarines,
+        /*this.game.physics.collide(this.barrels, this.submarines,
                                   this.handleBarrelSubmarineCollision,
-                                  null, this);
+                                  null, this);*/
+        this.hitTest(this.barrels, this.submarines,
+                     this.handleBarrelSubmarineCollision,
+                     null, this);
+    }
+
+    private hitTest(groupA: Phaser.Group, groupB: Phaser.Group,
+                    overlapCallback: Function, processCallback?: Function,
+                    callbackContext?: Object) {
+        var overlaps = this.game.physics['overlap'];
+        var handleCollision =
+            (a, b) => overlapCallback.call(callbackContext, a, b);
+        var proc = processCallback;
+        groupA.forEach((a) => {
+            groupB.forEach((b) => {
+                if(overlaps(a, b)) {
+                    if(!proc || (proc && proc(a, b)))
+                        handleCollision(a, b);
+                }
+            }, this, false)
+        }, this, false);
     }
 
     private createSubmarines(submarines: Phaser.Group, n: number) {

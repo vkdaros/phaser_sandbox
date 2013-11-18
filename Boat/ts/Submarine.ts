@@ -28,6 +28,9 @@ class Submarine extends Phaser.Sprite {
         this.anchor.x = 0.5;
         this.anchor.y = 0.5;
 
+        this.body.customSeparateX = true;
+        this.body.customSeparateY = true;
+
         var height = this.body.height;
         var oldWidth = this.body.width;
         var newWidth = oldWidth * 1.05;
