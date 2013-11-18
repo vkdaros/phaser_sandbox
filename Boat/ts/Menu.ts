@@ -16,7 +16,7 @@ class Menu extends Scene {
         };
         this.text = this.game.add.text(this.game.world.centerX,
                                        this.game.world.centerY,
-                                       "b04t\ntap to play.",
+                                       "Boat vs Submarines!\ntap to play.",
                                        fontConfig);
         this.text.anchor.x = 0.5;
         this.text.anchor.y = 0.5;

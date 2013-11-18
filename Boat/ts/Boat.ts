@@ -82,6 +82,7 @@ class Boat extends Scene {
 
         // boat movement
         this.boat.body.acceleration.x = 0;
+
         if (keyboard.isDown(keys.LEFT)) {
             this.boatToTheLeft();
         }
@@ -89,33 +90,24 @@ class Boat extends Scene {
             this.boatToTheRight();
         }
 
-        var pointer: Phaser.Pointer = this.game.input.activePointer;
-        if (pointer.isDown) {
-            var marginFraction = 0.35;
-            var leftBorder = this.game.world.width * marginFraction;
-            var rightBorder = this.game.world.width * (1 - marginFraction);
-            if (pointer.screenX < leftBorder) {
-                this.boatToTheLeft();
-            }
-            else if (pointer.screenX > rightBorder) {
-                this.boatToTheRight();
-            }
-            else {
-                this.boatDropBarrel();
-            }
+        if (keyboard.isDown(keys.SPACEBAR)) {
+            this.boatDropBarrel();
         }
 
-        // lock boat inside the arena
+        if (this.game.device.desktop) {
+            this.handleBoatPointerMovement(this.game.input.activePointer);
+        }
+        else {
+            this.handleBoatPointerMovement(this.game.input.pointer1);
+            this.handleBoatPointerMovement(this.game.input.pointer2);
+        }
+
+        // lock boat inside the level
         this.boat.body.collideWorldBounds = true;
 
         // hud
         this.hudLevel["content"] = "Level: " + this.level;
         this.hudLives["content"] = "Lives: " + this.lives;
-
-        // Drop barrel.
-        if (keyboard.isDown(keys.SPACEBAR)) {
-            this.boatDropBarrel();
-        }
 
         // All submarines tries to fire.
         this.submarines.forEach((submarine) => submarine.shoot(), this, true);
@@ -138,6 +130,25 @@ class Boat extends Scene {
         this.hitTest(this.barrels, this.submarines,
                      this.handleBarrelSubmarineCollision,
                      null, this);
+    }
+
+    private handleBoatPointerMovement(pointer: Phaser.Pointer): void {
+        if (pointer.active && pointer.isDown) {
+            var marginFraction = 0.35;
+            var width = this.game.stage.scale.width;
+            var leftBorder = width * marginFraction;
+            var rightBorder = width * (1 - marginFraction);
+            if (pointer.x < leftBorder) {
+                this.boatToTheLeft();
+            }
+            else if (pointer.x > rightBorder) {
+                this.boatToTheRight();
+            }
+            else {
+                this.boatDropBarrel();
+            }
+            pointer.isDown = false;
+        }
     }
 
     private boatToTheRight(): void {
@@ -296,6 +307,13 @@ class Boat extends Scene {
         this.submarines.forEach((submarine) => draw(submarine), this, true);
         this.barrels.forEach((barrel) => draw(barrel), this, true);
         this.bombs.forEach((bomb) => draw(bomb), this, true);
-        //this.game.debug.renderPointer(this.game.input.activePointer);
+
+        if (this.game.device.desktop) {
+            this.game.debug.renderPointer(this.game.input.activePointer);
+        }
+        else {
+            this.game.debug.renderPointer(this.game.input.pointer1);
+            this.game.debug.renderPointer(this.game.input.pointer2);
+        }
     }
 }

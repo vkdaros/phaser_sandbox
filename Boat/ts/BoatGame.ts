@@ -20,8 +20,22 @@ class BoatGame {
 
     public preload(): void {
         this.setupLoadingScreen();
-        var u = (k) => this.updateLoadingScreen.call(this, k);
+        var u = (p) => this.updateLoadingScreen.call(this, p);
 
+        // mobile settings
+        this.game.stage["disableVisibilityChange"] = true;
+        this.game.stage.scale["alignPageHorizontally"] = true;
+        if (!this.game.device.desktop) {
+            this.game.input.maxPointers = 2;
+            this.game.stage.scaleMode = Phaser.StageScaleMode.EXACT_FIT;
+            this.game.stage.scale["minWidth"] = 480;
+            this.game.stage.scale["minHeight"] = 320;
+            this.game.stage.scale["forceLandscape"] = true;
+            this.game.stage.scale.setScreenSize(true);
+            this.game.stage.scale.startFullScreen();
+        }
+
+        // load assets
         u(0);  this.game.load.image("backgroundImg", "assets/images/background.png");
         u(15); this.game.load.image("boatImg", "assets/images/boat.png");
         u(30); this.game.load.image("barrelImg", "assets/images/barrel.png");
@@ -64,7 +78,7 @@ class BoatGame {
             fill: "#b55",
             align: "center"
         };
-        this.loadingText = this.game.add.text(480, 240, "", fontConfig);
+        this.loadingText = this.game.add.text(480, 240, "0%", fontConfig);
         this.loadingText.anchor.setTo(0.5, 0.5);
     }
 
