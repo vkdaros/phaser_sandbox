@@ -77,25 +77,12 @@ class Boat extends Scene {
     }
 
     public update(): void {
-        var keyboard = this.game.input.keyboard;
-        var keys = Phaser.Keyboard;
-
-        // boat movement
+        // No left/right command = slow down.
         this.boat.body.acceleration.x = 0;
-
-        if (keyboard.isDown(keys.LEFT)) {
-            this.boatToTheLeft();
-        }
-        if (keyboard.isDown(keys.RIGHT)) {
-            this.boatToTheRight();
-        }
-
-        if (keyboard.isDown(keys.SPACEBAR)) {
-            this.boatDropBarrel();
-        }
 
         if (this.game.device.desktop) {
             this.handleBoatPointerMovement(this.game.input.activePointer);
+            this.handleBoatKeyMovement();
         }
         else {
             this.handleBoatPointerMovement(this.game.input.pointer1);
@@ -130,6 +117,21 @@ class Boat extends Scene {
         this.hitTest(this.barrels, this.submarines,
                      this.handleBarrelSubmarineCollision,
                      null, this);
+    }
+
+    private handleBoatKeyMovement(): void {
+        var keyboard = this.game.input.keyboard;
+        var keys = Phaser.Keyboard;
+
+        if (keyboard.isDown(keys.LEFT)) {
+            this.boatToTheLeft();
+        }
+        if (keyboard.isDown(keys.RIGHT)) {
+            this.boatToTheRight();
+        }
+        if (keyboard.isDown(keys.SPACEBAR)) {
+            this.boatDropBarrel();
+        }
     }
 
     private handleBoatPointerMovement(pointer: Phaser.Pointer): void {
@@ -300,6 +302,7 @@ class Boat extends Scene {
         t.start(1);
     }
 
+/*
     public render(): void {
         var draw = (s) => this.game.debug.renderSpriteBody(s, "rgba(0,255,0,0.5)");
         draw(this.boat);
@@ -316,4 +319,5 @@ class Boat extends Scene {
             this.game.debug.renderPointer(this.game.input.pointer3);
         }
     }
+*/
 }
