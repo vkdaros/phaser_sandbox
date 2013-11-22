@@ -27,12 +27,12 @@ class BoatGame {
         this.game.stage.scale["alignPageHorizontally"] = true;
         if (!this.game.device.desktop) {
             this.game.input.addPointer();
-            this.game.stage.scaleMode = Phaser.StageScaleMode.EXACT_FIT;
+            /*this.game.stage.scaleMode = Phaser.StageScaleMode.EXACT_FIT;
             this.game.stage.scale["minWidth"] = 480;
             this.game.stage.scale["minHeight"] = 320;
             this.game.stage.scale["forceLandscape"] = true;
             this.game.stage.scale.setScreenSize(true);
-            this.game.stage.scale.startFullScreen();
+            this.game.stage.scale.startFullScreen();*/
         }
 
         // load assets
@@ -87,8 +87,11 @@ class BoatGame {
     }
 }
 
-window.onload = (
+/*window.onload = (
     function() {
         var boatGame = new BoatGame();
     }
-);
+);*/
+console.log("vou inicializar!");
+var boatGame = new BoatGame();
+console.log("inicializei...");
