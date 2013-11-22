@@ -14,7 +14,11 @@ class BoatGame {
         state.preload = () => this.preload.call(this);
         state.create = this.create;
 
-        this.game = new Phaser.Game(960, 640, Phaser.CANVAS, "", state, false,
+        var width = 960; //window.innerWidth;
+        var height = 480; //window.innerHeight;
+        var renderer = Phaser.WEBGL;
+
+        this.game = new Phaser.Game(width, height, renderer, "", state, false,
                                     false);
     }
 
@@ -26,13 +30,12 @@ class BoatGame {
         this.game.stage["disableVisibilityChange"] = true;
         this.game.stage.scale["alignPageHorizontally"] = true;
         if (!this.game.device.desktop) {
-            this.game.input.addPointer();
-            /*this.game.stage.scaleMode = Phaser.StageScaleMode.EXACT_FIT;
+            this.game.stage.scaleMode = Phaser.StageScaleMode.EXACT_FIT;
             this.game.stage.scale["minWidth"] = 480;
             this.game.stage.scale["minHeight"] = 320;
             this.game.stage.scale["forceLandscape"] = true;
             this.game.stage.scale.setScreenSize(true);
-            this.game.stage.scale.startFullScreen();*/
+            this.game.stage.scale.startFullScreen();
         }
 
         // load assets
@@ -87,11 +90,4 @@ class BoatGame {
     }
 }
 
-/*window.onload = (
-    function() {
-        var boatGame = new BoatGame();
-    }
-);*/
-console.log("vou inicializar!");
 var boatGame = new BoatGame();
-console.log("inicializei...");

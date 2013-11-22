@@ -316,7 +316,6 @@ class Boat extends Scene {
         else {
             this.game.debug.renderPointer(this.game.input.pointer1);
             this.game.debug.renderPointer(this.game.input.pointer2);
-            this.game.debug.renderPointer(this.game.input.pointer3);
         }
     }
 */
